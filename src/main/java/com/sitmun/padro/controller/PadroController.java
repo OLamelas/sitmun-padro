@@ -13,7 +13,7 @@ public class PadroController {
     private final PadroService padroService;
 
     @GetMapping("/{municipality}/{nucleus}/{INECode}")
-    public ResponseEntity<byte[]> getDomicilios(
+    public ResponseEntity<byte[]> getHabitantesByDomicilio(
             @PathVariable String municipality,
             @PathVariable String nucleus,
             @PathVariable String INECode,

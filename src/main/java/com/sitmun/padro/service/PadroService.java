@@ -77,10 +77,6 @@ public class PadroService {
             String request_xml =  "<![CDATA[<e>" + sml_ope + sml_sec + sml_par + "</e>]]>";
 
             SOAPMessage soapResponse = soap.sendSOAPRequest(soap.createSOAPRequest(request_xml));
-            /*OutputStream out = response.getOutputStream();
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("application/json;charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");*/
 
             String responseSTR = "";
             SOAPBody body = soapResponse.getSOAPBody();
