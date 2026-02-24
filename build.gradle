@@ -22,7 +22,7 @@ dependencies {
 	implementation libs.spring.boot.starter
 	implementation libs.spring.boot.starter.web
 	implementation libs.spring.boot.starter.security
-	implementation libs.jjwt.api
+	implementation libs.spring.boot.starter.actuator
 	implementation libs.commons.codec
 	implementation libs.commons.text
 	implementation libs.javax.xml.soap
@@ -32,8 +32,6 @@ dependencies {
 	compileOnly libs.lombok
 	annotationProcessor libs.lombok
 	annotationProcessor libs.mapstruct.processor
-	runtimeOnly libs.jjwt.impl
-	runtimeOnly libs.jjwt.jackson
 	testImplementation libs.spring.boot.starter.test
 	testImplementation libs.spring.security.test
 	testRuntimeOnly libs.junit.platform.launcher

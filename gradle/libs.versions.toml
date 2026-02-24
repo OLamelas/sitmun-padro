@@ -6,9 +6,6 @@ spring-dependency-management = "1.1.7"
 # Java
 java = "17"
 
-# JWT
-jjwt = "0.12.6"
-
 # Apache Commons
 commons-codec = "1.16.0"
 commons-text = "1.15.0"
@@ -35,11 +32,7 @@ spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-start
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
-
-# JWT
-jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
-jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
-jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 
 # Apache Commons
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
@@ -65,4 +58,3 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
-

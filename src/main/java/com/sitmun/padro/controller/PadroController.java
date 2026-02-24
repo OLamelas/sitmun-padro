@@ -12,15 +12,15 @@ public class PadroController {
 
     private final PadroService padroService;
 
-    @GetMapping("/{municipality}/{nucleus}/{INECode}")
+    @GetMapping("/habitantes/domicilio/{municipality}/{nucleus}/{INECode}")
     public ResponseEntity<byte[]> getHabitantesByDomicilio(
             @PathVariable String municipality,
             @PathVariable String nucleus,
             @PathVariable String INECode,
-            @RequestParam String portal,
-            @RequestParam String letterFrom,
-            @RequestParam String floor,
-            @RequestParam String door
+            @RequestParam(defaultValue = "") String portal,
+            @RequestParam(defaultValue = "") String letterFrom,
+            @RequestParam(defaultValue = "") String floor,
+            @RequestParam(defaultValue = "") String door
     ) {
         return ResponseEntity.ok(padroService.tractarPrimeraPeticio(municipality, nucleus, INECode, portal, letterFrom, floor, door));
     }
