@@ -8,8 +8,7 @@ import com.sitmun.padro.utils.PadronManager;
 import com.sitmun.padro.utils.UtilsPadron;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.util.*;
 import javax.xml.soap.*;
@@ -62,7 +61,7 @@ public class PadroService {
     }
 
 
-    private void tractarPrimeraPeticio (String municipi, String nucli, String codiIne, String portal, String letraDesde, String planta, String porta, HttpServletRequest request, HttpServletResponse response) {
+    public byte[] tractarPrimeraPeticio (String municipi, String nucli, String codiIne, String portal, String letraDesde, String planta, String porta) {
         try {
             log.info("tractarPeticio init: obtenir els domicilis per aquesta adreça");
             //municipi -> xxyyy : xx -> provincia | yyy -> municipi
@@ -78,10 +77,10 @@ public class PadroService {
             String request_xml =  "<![CDATA[<e>" + sml_ope + sml_sec + sml_par + "</e>]]>";
 
             SOAPMessage soapResponse = soap.sendSOAPRequest(soap.createSOAPRequest(request_xml));
-            OutputStream out = response.getOutputStream();
+            /*OutputStream out = response.getOutputStream();
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json;charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");*/
 
             String responseSTR = "";
             SOAPBody body = soapResponse.getSOAPBody();
@@ -127,10 +126,11 @@ public class PadroService {
             }else{
                 responseSTR += "{\"results\":[],\"status\":\"EMPTY\"}";
             }
-            out.write(responseSTR.getBytes("UTF-8"));
             log.debug("tractarPeticio end");
+            return responseSTR.getBytes("UTF-8");
         } catch (Exception e) {
             log.error("Error al doGet",e);
+            return null;
         }
     }
 
