@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.5.11'
-	id 'io.spring.dependency-management' version '1.1.7'
+	alias(libs.plugins.spring.boot)
+	alias(libs.plugins.spring.dependency.management)
 }
 
 group = 'com.sitmun'
@@ -19,9 +19,24 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation libs.spring.boot.starter
+	implementation libs.spring.boot.starter.web
+	implementation libs.spring.boot.starter.security
+	implementation libs.jjwt.api
+	implementation libs.commons.codec
+	implementation libs.commons.text
+	implementation libs.javax.xml.soap
+	implementation libs.javax.activation
+	implementation libs.mapstruct
+	implementation libs.jackson.dataformat.xml
+	compileOnly libs.lombok
+	annotationProcessor libs.lombok
+	annotationProcessor libs.mapstruct.processor
+	runtimeOnly libs.jjwt.impl
+	runtimeOnly libs.jjwt.jackson
+	testImplementation libs.spring.boot.starter.test
+	testImplementation libs.spring.security.test
+	testRuntimeOnly libs.junit.platform.launcher
 }
 
 tasks.named('test') {

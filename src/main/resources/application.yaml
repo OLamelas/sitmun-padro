@@ -1,3 +1,21 @@
 spring:
   application:
     name: padro
+
+server:
+  port: 8080
+
+# JWT Configuration - Must match the secret used by the external auth app
+jwt:
+  secret: ${JWT_SECRET:my-super-secret-key-for-jwt-token-signing-change-this-in-production}
+  expiration: 86400000  # 24 hours in milliseconds
+
+# Shared API Secret - Additional security layer
+api:
+  shared-secret: ${API_SHARED_SECRET:shared-secret-between-microservices-change-in-production}
+
+padro:
+  aytos-username: ${AYTOS_USERNAME:default-aytos-username}
+  aytos-password: ${AYTOS_PASSWORD:default-aytos-password}
+  aytos-soap-url: ${AYTOS_SOAP_URL:default-aytos-url}
+  aytos-pub-key: ${AYTOS_PUB_KEY:default-aytos-key}

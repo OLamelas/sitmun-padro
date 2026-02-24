@@ -1,0 +1,68 @@
+[versions]
+# Spring Boot and related
+spring-boot = "3.5.11"
+spring-dependency-management = "1.1.7"
+
+# Java
+java = "17"
+
+# JWT
+jjwt = "0.12.6"
+
+# Apache Commons
+commons-codec = "1.16.0"
+commons-text = "1.15.0"
+
+# Lombok
+lombok = "1.18.30"
+
+# MapStruct
+mapstruct = "1.6.3"
+
+# Jackson XML
+jackson-dataformat-xml = "2.18.2"
+
+# SOAP/Web Services
+soap-api = "1.4.0"
+
+# Testing
+junit-platform = "1.11.4"
+
+[libraries]
+# Spring Boot
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-security-test = { module = "org.springframework.security:spring-security-test" }
+
+# JWT
+jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
+jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
+
+# Apache Commons
+commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
+
+# Lombok
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# MapStruct
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+
+# Jackson XML
+jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson-dataformat-xml" }
+
+# SOAP/Web Services
+javax-xml-soap = { module = "javax.xml.soap:javax.xml.soap-api", version.ref = "soap-api" }
+javax-activation = { module = "javax.activation:activation", version = "1.1.1" }
+
+# Testing
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
+
