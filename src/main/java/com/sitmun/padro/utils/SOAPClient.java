@@ -1,4 +1,4 @@
-package com.sitmun.padro.dto;
+package com.sitmun.padro.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,7 +15,6 @@ import java.util.Date;
 
 import javax.xml.soap.*;
 
-import com.sitmun.padro.utils.UtilsPadron;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

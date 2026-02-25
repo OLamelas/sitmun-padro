@@ -3,7 +3,7 @@ package com.sitmun.padro.service;
 import com.sitmun.padro.config.PadroProperties;
 import com.sitmun.padro.dto.DomiciliosModel;
 import com.sitmun.padro.dto.HabitantesModel;
-import com.sitmun.padro.dto.SOAPClient;
+import com.sitmun.padro.utils.SOAPClient;
 import com.sitmun.padro.utils.PadronManager;
 import com.sitmun.padro.utils.UtilsPadron;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +63,7 @@ public class PadronEdiService {
     }
 
 
-    public byte[] tractarPrimeraPeticio (String municipi, String nucli, String codiIne) {
+    public byte[] getHabitantes(String municipi, String nucli, String codiIne) {
         try {
             log.info("tractarPeticio init: obtenir els domicilis per aquesta adreça");
             //municipi -> xxyyy : xx -> provincia | yyy -> municipi

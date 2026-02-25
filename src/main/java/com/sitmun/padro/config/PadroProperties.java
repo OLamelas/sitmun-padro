@@ -7,6 +7,9 @@ public record PadroProperties(
         String aytosSoapUrl,
         String aytosUsername,
         String aytosPassword,
-        String aytosPubKey
+        String aytosPubKey,
+        String dbUrl,
+        String dbUsername,
+        String dbPassword
 ) {
 }

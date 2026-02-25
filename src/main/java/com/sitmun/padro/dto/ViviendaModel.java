@@ -1,13 +1,14 @@
 package com.sitmun.padro.dto;
 
 import java.math.BigDecimal;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ViviendaModel {
     private boolean existe;
     private String referenciaCatastral;
