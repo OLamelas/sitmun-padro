@@ -91,6 +91,7 @@ public class PadroController {
     @GetMapping("/consulta")
     public ResponseEntity<String> consulta(
             @RequestParam String control,
+            @RequestParam String origen,
             @RequestParam(required = false) String refCat,
             @RequestParam(required = false) String codViaIne,
             @RequestParam(required = false) String codPseIne,
@@ -105,6 +106,49 @@ public class PadroController {
             @RequestParam(required = false) String cBloque,
             @RequestParam(defaultValue = "json") String format
     ) {
+        if (!origen.equalsIgnoreCase("PMH")) {
+            return ResponseEntity.badRequest()
+                    .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                    .body("{\"status\":\"Error\",\"message\":\"Parametro origen erroneo\"}");
+        }
+
+        if (!control.equalsIgnoreCase("PT") && !control.equalsIgnoreCase("PL") && !control.equalsIgnoreCase("CD")) {
+            return ResponseEntity.badRequest()
+                    .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                    .body("{\"status\":\"Error\",\"message\":\"Parámetro control erróneo\"}");
+        }
+
+        if (control.equalsIgnoreCase("CD") && (refCat == null || (refCat.length() != 14 && refCat.length() != 20))) {
+            return ResponseEntity.badRequest()
+                    .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                    .body("{\"status\":\"Error\",\"message\":\"Parámetro referencia catastral erróneo\"}");
+        }
+
+        if ((control.equalsIgnoreCase("PT") || control.equalsIgnoreCase("PL")) &&
+                ((codViaIne == null || codViaIne.isEmpty()) && (codPseIne == null || codPseIne.isEmpty()))) {
+            return ResponseEntity.badRequest()
+                    .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                    .body("{\"status\":\"Error\",\"message\":\"Parámetro código INE requerido\"}");
+        }
+
+        if ((control.equalsIgnoreCase("PT") || control.equalsIgnoreCase("PL")) && munIne == null) {
+            return ResponseEntity.badRequest()
+                    .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                    .body("{\"status\":\"Error\",\"message\":\"Parámetro munIne requerido\"}");
+        }
+
+        if ((control.equalsIgnoreCase("PT") || control.equalsIgnoreCase("PL")) && codViaIne != null && numero == null) {
+            return ResponseEntity.badRequest()
+                    .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                    .body("{\"status\":\"Error\",\"message\":\"Parámetro número requerido\"}");
+        }
+
+        if (control.equalsIgnoreCase("PL") && planta == null && puerta == null && escalera == null) {
+            return ResponseEntity.badRequest()
+                    .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                    .body("{\"status\":\"Error\",\"message\":\"Parámetro planta, puerta o escalera requerido\"}");
+        }
+
         String contentType = "html".equalsIgnoreCase(format) ? CONTENT_TYPE_HTML : CONTENT_TYPE_JSON;
 
         // Crear un mapa con los parámetros
