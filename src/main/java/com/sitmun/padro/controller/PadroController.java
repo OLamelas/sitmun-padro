@@ -1,22 +1,29 @@
 package com.sitmun.padro.controller;
 
-import com.sitmun.padro.service.DomicilioService;
-import com.sitmun.padro.service.PadroService;
-import com.sitmun.padro.service.PadronEdiService;
-import com.sitmun.padro.service.TarifasTributosService;
+import com.sitmun.padro.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/padron")
 public class PadroController {
 
+    private final ViaService viaService;
     private final PadroService padroService;
+    private final ViviendaService viviendaService;
+    private final ConsultaService consultaService;
     private final DomicilioService domicilioService;
     private final PadronEdiService padronEdiService;
     private final TarifasTributosService tarifasTributosService;
+
+    private static final String CONTENT_TYPE_HTML = "text/html";
+    private static final String CONTENT_TYPE_JSON = "application/json";
+    private static final String HEADER_CONTENT_TYPE = "Content-Type";
 
     @GetMapping("/habitantes/{municipality}/{nucleus}/{INECode}")
     public ResponseEntity<byte[]> getHabitantesWithFilters(
@@ -41,10 +48,7 @@ public class PadroController {
     }
 
     @GetMapping("/tributos/{municipio}/{refCad}")
-    public ResponseEntity<byte[]> getTributos(
-            @PathVariable String municipio,
-            @PathVariable String refCad
-    ) {
+    public ResponseEntity<byte[]> getTributos(@PathVariable String municipio, @PathVariable String refCad) {
         return ResponseEntity.ok(tarifasTributosService.getTributos(municipio, refCad));
     }
 
@@ -53,6 +57,73 @@ public class PadroController {
             @PathVariable String municipio,
             @RequestParam(defaultValue = "json") String format
     ) {
-        return ResponseEntity.ok(domicilioService.getDomicilios(municipio, format));
+        String contentType = "html".equalsIgnoreCase(format) ? "application/html" : "application/json";
+        return ResponseEntity.ok()
+                .header("Content-Type", contentType)
+                .body(domicilioService.getDomicilios(municipio, format));
+    }
+
+    @PutMapping("/vias")
+    public ResponseEntity<String> updateMismatchedVias(
+            @RequestParam String municipio,
+            @RequestParam(defaultValue = "") String codiIneVia,
+            @RequestParam(defaultValue = "") String nombreVia,
+            @RequestParam(defaultValue = "json") String format
+    ) {
+        String contentType = "html".equalsIgnoreCase(format) ? "application/html" : "application/json";
+        return ResponseEntity.ok()
+                .header("Content-Type", contentType)
+                .body(viaService.getViasByMunicipioOrCode(municipio, codiIneVia, nombreVia, format));
+    }
+
+
+    @PostMapping("/viviendas/{municipio}")
+    public ResponseEntity<String> importViviendas(
+            @PathVariable String municipio,
+            @RequestParam(defaultValue = "json") String format
+    ) {
+        String contentType = "html".equalsIgnoreCase(format) ? "application/html" : "application/json";
+        return ResponseEntity.ok()
+                .header("Content-Type", contentType)
+                .body(viviendaService.importViviendas(municipio, format));
+    }
+
+    @GetMapping("/consulta")
+    public ResponseEntity<String> consulta(
+            @RequestParam String control,
+            @RequestParam(required = false) String refCat,
+            @RequestParam(required = false) String codViaIne,
+            @RequestParam(required = false) String codPseIne,
+            @RequestParam(required = false) String munIne,
+            @RequestParam(required = false) String numero,
+            @RequestParam(required = false) String planta,
+            @RequestParam(required = false) String puerta,
+            @RequestParam(required = false) String escalera,
+            @RequestParam(required = false) String codUpobIne,
+            @RequestParam(required = false) String complemento,
+            @RequestParam(required = false) String bloque,
+            @RequestParam(required = false) String cBloque,
+            @RequestParam(defaultValue = "json") String format
+    ) {
+        String contentType = "html".equalsIgnoreCase(format) ? CONTENT_TYPE_HTML : CONTENT_TYPE_JSON;
+
+        // Crear un mapa con los parámetros
+        Map<String, String> parametros = new HashMap<>();
+        parametros.put("refCat", refCat);
+        parametros.put("cod_via_ine", codViaIne);
+        parametros.put("cod_pse_ine", codPseIne);
+        parametros.put("mun_ine", munIne);
+        parametros.put("numero", numero);
+        parametros.put("planta", planta);
+        parametros.put("puerta", puerta);
+        parametros.put("escalera", escalera);
+        parametros.put("cod_upob_ine", codUpobIne);
+        parametros.put("complemento", complemento);
+        parametros.put("bloque", bloque);
+        parametros.put("cbloque", cBloque);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CONTENT_TYPE, contentType)
+                .body(consultaService.recuperarInfo(control, parametros));
     }
 }

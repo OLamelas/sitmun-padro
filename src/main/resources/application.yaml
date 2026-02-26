@@ -24,6 +24,7 @@ padro:
   aytos-password: ${AYTOS_PASSWORD:default-aytos-password}
   aytos-soap-url: ${AYTOS_SOAP_URL:default-aytos-url}
   aytos-pub-key: ${AYTOS_PUB_KEY:default-aytos-key}
-  db.url: ${DB_URL:jdbc:h2:mem:padro-db}
-  db.username: ${DB_USERNAME:sa}
-  db.password: ${DB_PASSWORD:}
+  aytos-refcat-url: ${AYTOS_REFCAT_URL:default-aytos-refcat-url}
+  db-url: ${DB_URL:jdbc:h2:mem:padro-db}
+  db-username: ${DB_USERNAME:sa}
+  db-password: ${DB_PASSWORD:}

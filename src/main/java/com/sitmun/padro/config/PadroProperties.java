@@ -8,6 +8,7 @@ public record PadroProperties(
         String aytosUsername,
         String aytosPassword,
         String aytosPubKey,
+        String aytosRefcatUrl,
         String dbUrl,
         String dbUsername,
         String dbPassword

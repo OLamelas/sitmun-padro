@@ -27,6 +27,11 @@ public class ApiRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws ServletException, IOException {
 
+        if (!"GET".equalsIgnoreCase(request.getMethod())) { // TODO: Review actual need of write operations
+            response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return;
+        }
+
         final String apiSecretHeader = request.getHeader("X-API-Key");
 
         if (apiSecretHeader == null || !apiSecretHeader.equals(sharedSecret)) {

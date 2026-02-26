@@ -4,15 +4,17 @@ import com.sitmun.padro.dto.DomiciliosModel;
 import com.sitmun.padro.dto.ViasModel;
 import com.sitmun.padro.dto.ViviendaModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class GestorBD {
     private static final String connDriver = "oracle.jdbc.driver.OracleDriver";
+    public static final String PLANTA = "planta";
     private String connURL = "";
     private String connUser = "";
     private String connPassword = "";
@@ -36,7 +38,7 @@ public class GestorBD {
      *
      * @param municipio  Codigo del municipio a eliminar vieja(s) via(s) e inserir la(s) nueva(s)
      * @param codiIneVia Opcional, codigoIne de la nueva via
-     * @return                1 proceso correcto, -1 proceso incorrecto
+     * @return 1 proceso correcto, -1 proceso incorrecto
      */
     public int ejecutarProcesoVias(String municipio, Integer codiIneVia, List<ViasModel> list_vm) {
         Connection conn = getDBConnection(connURL, connUser, connPassword);
@@ -122,7 +124,7 @@ public class GestorBD {
      *
      * @param municipio Codigo del municipio a eliminar viejo(s) domicilio(s) e inserir lo(s) nuevo(s)
      * @param list_dm   Lista de lo(s) nuevo(s) domicilios
-     * @return                1 proceso correcto, -1 proceso incorrecto
+     * @return 1 proceso correcto, -1 proceso incorrecto
      */
     public int ejecutarProcesoDivisionHorizontal(String municipio, List<DomiciliosModel> list_dm) {
         Connection conn = getDBConnection(connURL, connUser, connPassword);
@@ -207,7 +209,7 @@ public class GestorBD {
      * y devuelve 1 proceso correcto, -1 proceso incorrecto
      *
      * @param municipio Codigo del municipio a eliminar vieja(s) via(s) e inserir la(s) nueva(s)
-     * @return                1 proceso correcto, -1 proceso incorrecto
+     * @return 1 proceso correcto, -1 proceso incorrecto
      */
     public int ejecutarProcesoViviendas(String municipio) {
         Connection conn = getDBConnection(connURL, connUser, connPassword);
@@ -267,25 +269,24 @@ public class GestorBD {
     }
 
     /**
-     * M�todo para el ws de aytos que segun los parametros de entrada devuelve portales/edifico o la vertical
+     * Metodo para el ws de aytos que segun los parametros de entrada devuelve portales/edifico o la vertical
      *
      */
-    public List<ViviendaModel> consultaHabitants(String control, HashMap<String, String> params, String url) {
+    public List<ViviendaModel> consultaHabitants(String control, Map<String, String> params, String url) {
 
         Connection conn = getDBConnection(connURL, connUser, connPassword);
         try {
-            List<ViviendaModel> result = new ArrayList<ViviendaModel>();
+            List<ViviendaModel> result = new ArrayList<>();
 
             //Si la consulta es PMH/PL i ESCALA ES NOT NULL HEM DE FER LA CONVERSIO a la taula
 
-            if (control.equalsIgnoreCase("PL") && params.get("planta") != null && params.get("planta").length() > 0) {
-                PreparedStatement ps_consulta_planta = conn.prepareStatement("SELECT T_ABREUJAT from SIT_CAE1MV1_210X where T_ABREUJAT_AYTOS=?");
-                log.debug("Busquem planta de conversio per a : " + params.get("planta"));
-                ps_consulta_planta.setString(1, params.get("planta").toUpperCase());
-                ResultSet resultset_planta = ps_consulta_planta.executeQuery();
-                while (resultset_planta.next()) {
-                    params.put("planta", resultset_planta.getString("T_ABREUJAT"));
-                    break;
+            if (control.equalsIgnoreCase("PL") && StringUtils.hasText(params.get(PLANTA))) {
+                PreparedStatement psConsultaPlanta = conn.prepareStatement("SELECT T_ABREUJAT from SIT_CAE1MV1_210X where T_ABREUJAT_AYTOS=?");
+                log.debug("Busquem planta de conversio per a : {}", params.get(PLANTA));
+                psConsultaPlanta.setString(1, params.get(PLANTA).toUpperCase());
+                ResultSet resultsetPlanta = psConsultaPlanta.executeQuery();
+                if (resultsetPlanta.next()) {
+                    params.put(PLANTA, resultsetPlanta.getString("T_ABREUJAT"));
                 }
             }
 
@@ -294,7 +295,7 @@ public class GestorBD {
             log.debug("Consulta executada correctament. Tornem elements");
 
             String refcad = "";
-            String mun_ine = "";
+            String munIne = "";
 
             while (resultset.next()) {
                 ViviendaModel vivienda = new ViviendaModel();
@@ -303,10 +304,10 @@ public class GestorBD {
                 vivienda.setExiste(true);
 
                 refcad = resultset.getString("REF_CAD");
-                mun_ine = resultset.getString("COD_MUNI");
+                munIne = resultset.getString("COD_MUNI");
 
                 if (refcad != null && refcad.length() > 14) {
-                    vivienda.setReferenciaCatastral20(String.valueOf(refcad)); //Fem la copia abans de tallarla
+                    vivienda.setReferenciaCatastral20(refcad); //Fem la copia abans de tallarla
                 }
 
                 if (refcad != null && refcad.length() >= 14) {
@@ -314,7 +315,7 @@ public class GestorBD {
                 }
 
                 vivienda.setReferenciaCatastral(refcad);
-                vivienda.setCodigoMunicipio(mun_ine);
+                vivienda.setCodigoMunicipio(munIne);
                 vivienda.setCodigoNucleo(resultset.getString("UPOB_INE7"));
                 vivienda.setNombreNucleo(resultset.getString("NOM_UPOB_INE"));
                 vivienda.setCodigoBdmac(resultset.getString("IDICC"));
@@ -331,7 +332,7 @@ public class GestorBD {
 
                 if (refcad == null) refcad = ""; //Si la referencia catastral es null que no peti la linia de sota
                 url = url.replace("{refcad}", refcad);
-                url = url.replace("{mun_ine}", mun_ine);
+                url = url.replace("{mun_ine}", munIne);
 
                 vivienda.setUrl(url);
 
@@ -363,7 +364,7 @@ public class GestorBD {
         }
     }
 
-    private ResultSet executarConsulta(String control, HashMap<String, String> params, Connection conn) throws SQLException {
+    private ResultSet executarConsulta(String control, Map<String, String> params, Connection conn) throws SQLException {
 
         log.debug("init del executarConsulta");
         log.debug("control: " + control);
@@ -489,8 +490,8 @@ public class GestorBD {
             if (params.get("escalera") != null && params.get("escalera").length() > 0)
                 where.add("upper(v.ESCALA) = '" + params.get("escalera").toUpperCase() + "'");
             else where.add("(TRIM(v.ESCALA) IS NULL OR v.ESCALA is null)");
-            if (params.get("planta") != null && params.get("planta").length() > 0)
-                where.add("upper(v.PLANTA) = '" + params.get("planta").toUpperCase() + "'");
+            if (params.get(PLANTA) != null && params.get(PLANTA).length() > 0)
+                where.add("upper(v.PLANTA) = '" + params.get(PLANTA).toUpperCase() + "'");
             else where.add("(TRIM(v.PLANTA) IS NULL OR v.PLANTA is null)");
             if (params.get("puerta") != null && params.get("puerta").length() > 0)
                 where.add("upper(v.PORTA) = '" + params.get("puerta").toUpperCase() + "'");
