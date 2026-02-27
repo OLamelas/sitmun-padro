@@ -54,15 +54,15 @@ public class PadroController {
         return ResponseEntity.ok(tarifasTributosService.getTributos(municipio, refCad));
     }
 
-    @GetMapping("/domicilios/{municipio}")
-    public ResponseEntity<String> getDomicilios(
+    @PutMapping("/domicilios/{municipio}")
+    public ResponseEntity<String> importDomicilios(
             @PathVariable String municipio,
             @RequestParam(defaultValue = "json") String format
     ) {
         String contentType = "html".equalsIgnoreCase(format) ? "application/html" : "application/json";
         return ResponseEntity.ok()
                 .header("Content-Type", contentType)
-                .body(domicilioService.getDomicilios(municipio, format));
+                .body(domicilioService.importDomicilios(municipio, format));
     }
 
     @PutMapping("/vias")
@@ -172,7 +172,7 @@ public class PadroController {
                 .body(consultaService.recuperarInfo(control, parametros));
     }
 
-    @GetMapping(value = "/tirbutos", produces = CONTENT_TYPE_JSON)
+    @GetMapping(value = "/tributos", produces = CONTENT_TYPE_JSON)
     public ResponseEntity<String> getTributos(
             @RequestParam String control,
             @RequestParam String origen,
@@ -228,7 +228,7 @@ public class PadroController {
 
         //si envien PT o PL cal comprovar que
         if ((control.equalsIgnoreCase("PT") ||  control.equalsIgnoreCase("PL")) &&
-                (StringUtils.hasText(codViaIne) && StringUtils.hasText(codPseIne))) {
+                (!StringUtils.hasText(codViaIne) && !StringUtils.hasText(codPseIne))) {
             return ResponseEntity.badRequest()
                     .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
                     .body("{\"status\":\"Error\",\"message\":\"Parametro codigo ine requerido\" }");

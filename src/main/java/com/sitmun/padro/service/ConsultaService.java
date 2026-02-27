@@ -32,7 +32,7 @@ public class ConsultaService {
             log.debug("Error de recuperar habitants");
             responseSTR = "{\"error\": \"Contacti amb l'administrador\"}";
         } else if (!hmL.isEmpty()) {
-            log.debug("Sense dades");
+            log.debug("Primer elemento encontrado: {}", hmL.get(0).toJson(true));
             responseSTR = hmL.get(0).toJson(true);
         } else {
             log.debug("No existeix element");

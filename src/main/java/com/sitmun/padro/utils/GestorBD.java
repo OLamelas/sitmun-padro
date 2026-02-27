@@ -522,7 +522,7 @@ public class GestorBD {
             if (params.get("cod_upob_ine") != null) where.add("p.COD_UNIT_P='" + params.get("cod_upob_ine") + "'");
             if (params.get("cod_pse_ine") != null)
                 where.add("TO_NUMBER(p.COD_EX) =" + Long.parseLong(params.get("cod_pse_ine")));
-        } else if (control.equalsIgnoreCase("CD") && params.get("ref_cat").length() == 14) {
+        } else if (control.equalsIgnoreCase("CD") && params.get("ref_cat") != null && params.get("ref_cat").length() == 14) {
 
             consulta_stament =
                     "select p.cod_muni, " +

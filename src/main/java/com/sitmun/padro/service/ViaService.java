@@ -35,34 +35,24 @@ public class ViaService {
         try {
             log.info("tractarPeticio init: Consulta las V�as de un Municipio o una V�a en concreto por c�digo Ine o por nombre. Municipio:" + municipi);
             //municipi -> xxyyy : xx -> provincia | yyy -> municipi
-            String sml_par = createParSML(municipi,codiIneVia, nombreVia);
+            String smlPar = createParSML(municipi,codiIneVia, nombreVia);
 
             SOAPClient soap = new SOAPClient(padroProperties.aytosSoapUrl());
             String user = padroProperties.aytosUsername();
             String pwd = padroProperties.aytosPassword();
 
-            String sml_sec = soap.getSecurityField(padroProperties.aytosPubKey(),pwd,user,municipi);
+            String smlSec = soap.getSecurityField(padroProperties.aytosPubKey(),pwd,user,municipi);
             /* --- FUNCIONA --- */
-            String sml_ope = "<ope><apl>PAD</apl><tobj>VIA</tobj><cmd>LST</cmd><ver>2.0</ver></ope>";
+            String smlOpe = "<ope><apl>PAD</apl><tobj>VIA</tobj><cmd>LST</cmd><ver>2.0</ver></ope>";
 
-            String request_xml =  "<![CDATA[<e>" + sml_ope + sml_sec + sml_par + "</e>]]>";
+            String requestXml =  "<![CDATA[<e>" + smlOpe + smlSec + smlPar + "</e>]]>";
 
-            log.info("request_xml:" + request_xml);
+            log.info("request_xml:" + requestXml);
 
-            SOAPMessage soapResponse = soap.sendSOAPRequest(soap.createSOAPRequest(request_xml));
-            /*PrintWriter out = response.getWriter();
-            response.setStatus(HttpServletResponse.SC_OK);*/
+            SOAPMessage soapResponse = soap.sendSOAPRequest(soap.createSOAPRequest(requestXml));
 
-            boolean format_html = "html".equalsIgnoreCase(format);
-            /*if(request.getParameter("format") !=null && request.getParameter("format").equalsIgnoreCase("html")){
-                format_html = true;
-                response.setContentType("text/html;charset=UTF-8");
-                response.setCharacterEncoding("UTF-8");
+            boolean formatHtml = "html".equalsIgnoreCase(format);
 
-            }else{
-                response.setContentType("application/json;charset=UTF-8");
-                response.setCharacterEncoding("UTF-8");
-            }*/
             String responseSTR = "";
             SOAPBody body = soapResponse.getSOAPBody();
 
@@ -75,29 +65,29 @@ public class ViaService {
                 String resultEscaped = element.getTextContent();
                 resultDecoded = StringEscapeUtils.unescapeHtml4(resultEscaped);
                 //Si no conte el tag <l_vias> es que hi ha un error en la resposta
-                if(resultDecoded.indexOf("<l_via>")>-1){
+                if(resultDecoded.contains("<l_via>")){
                     validResponse = true;
                 }
             }
 
             if(validResponse){
-                List<ViasModel> vm_l = padronManager.getViasResponse(resultDecoded);
+                List<ViasModel> vmL = padronManager.getViasResponse(resultDecoded);
 
-                if(vm_l.size()>0) {
-                    if((codiIneVia.length()> 0 || nombreVia.length()>0)){
-                        Integer resultCodiIneVia = vm_l.get(0).getCodigoIneVia();
+                if(!vmL.isEmpty()) {
+                    if((!codiIneVia.isEmpty() || !nombreVia.isEmpty())){
+                        Integer resultCodiIneVia = vmL.get(0).getCodigoIneVia();
                         if(resultCodiIneVia != null){
-                            int result = gestorBD.ejecutarProcesoVias(municipi, resultCodiIneVia, vm_l);
+                            int result = gestorBD.ejecutarProcesoVias(municipi, resultCodiIneVia, vmL);
                             if(result >0){
-                                responseSTR = "Proc�s finalitzat correctament";
+                                responseSTR = "Proces finalitzat correctament";
                             }else{
-                                responseSTR = "Error en el proces d'importaci�. Sisplau, contacti amb l'administrador";
+                                responseSTR = "Error en el proces d'importacio. Sisplau, contacti amb l'administrador";
                             }
                         }else{
                             responseSTR = "Error via no trobada";
                         }
                     }else{
-                        int result = gestorBD.ejecutarProcesoVias(municipi, vm_l);
+                        int result = gestorBD.ejecutarProcesoVias(municipi, vmL);
                         //Una vez obtenido la lista de via(s), eliminamos municipio y via i las volvemos a inserir
                         if(result >0){
                             responseSTR = "Proc�s finalitzat correctament";
@@ -113,7 +103,7 @@ public class ViaService {
             }
 
             log.debug("tractarPeticio end");
-            return format_html ? responseSTR : "{\"status\":\"" + responseSTR +"\"}";
+            return formatHtml ? responseSTR : "{\"status\":\"" + responseSTR +"\"}";
 
         } catch (Exception e) {
             log.error("Error al doGet",e);
@@ -121,14 +111,14 @@ public class ViaService {
         }
     }
 
-    private String createParSML(String municipioParam, String CodigoIneVia, String nombreVia) {
+    private String createParSML(String municipioParam, String codigoIneVia, String nombreVia) {
         String codigoProvincia = UtilsPadron.getProvincia(municipioParam);
         String codigoMunicipio = UtilsPadron.getMunicipi(municipioParam);
 
         String smlParams = "<par><codigoProvincia>"+codigoProvincia+"</codigoProvincia><codigoMunicipio>"+codigoMunicipio+"</codigoMunicipio>";
 
-        if(!CodigoIneVia.isEmpty()){
-            smlParams += "<codigoIneVia>"+CodigoIneVia+"</codigoIneVia>";
+        if(!codigoIneVia.isEmpty()){
+            smlParams += "<codigoIneVia>"+codigoIneVia+"</codigoIneVia>";
         }
         else if(!nombreVia.isEmpty()){
             smlParams += "<nombreVia>"+nombreVia+"</nombreVia>";

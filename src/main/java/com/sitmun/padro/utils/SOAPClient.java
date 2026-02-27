@@ -19,10 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SOAPClient {
-	private String URL_AYTOS="https://urlpadro/services/Ci";
+	private String urlAytos ="https://urlpadro/services/Ci";
 	public SOAPClient(String url) {
 		super();
-		this.URL_AYTOS = url;
+		this.urlAytos = url;
 	}
 	
 	public String getSecurityField(String publicKey, String pwd, String usr,  String codiEntMunicipi ) throws UnsupportedEncodingException
@@ -79,7 +79,7 @@ public class SOAPClient {
 			SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();		
 	        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 	        
-	        URL soapEndPoint = new URL(this.URL_AYTOS);  		                          
+	        URL soapEndPoint = new URL(this.urlAytos);
 	        URLConnection urlConnection =  soapEndPoint.openConnection(); 		
 	        urlConnection.setConnectTimeout(60000); 		
 	        urlConnection.setReadTimeout(60000);	
@@ -121,7 +121,7 @@ public class SOAPClient {
 			// Mime Headers
 			final MimeHeaders headers = message.getMimeHeaders();
 			
-			headers.addHeader("SOAPAction", this.URL_AYTOS + "servicio");
+			headers.addHeader("SOAPAction", this.urlAytos + "servicio");
 
 			message.saveChanges();
 			

@@ -32,7 +32,7 @@ public class DomicilioService {
         this.gestorBD = new GestorBD(padroProperties.dbUrl(), padroProperties.dbUsername(), padroProperties.dbPassword());
     }
 
-    public String getDomicilios(String municipio, String format) {
+    public String importDomicilios(String municipio, String format) {
         try {
             log.info("tractarPeticio init: Consulta  dels domicilis d'un municipi");
             //municipi -> xxyyy : xx -> provincia | yyy -> municipi

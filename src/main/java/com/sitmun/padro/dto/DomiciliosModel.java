@@ -55,7 +55,7 @@ public class DomiciliosModel {
         result += "\"codigoPortal\":" + "\"" + this.getCodigoPortal() + "\",";
         result += "\"codigoEscalera\":" + "\"" + this.getCodigoEscalera() + "\",";
         result += "\"nombreEscalera\":" + "\"" + this.getNombreEscalera() + "\",";
-        result += "\"codigoPostal\":" + "\"" + this.getCodigoPortal() + "\",";
+        result += "\"codigoPostal\":" + "\"" + this.getCodigoPostal() + "\",";
         result += "\"referenciaCatastral\":" + "\"" + this.getReferenciaCatastral() + "\"";
 
         if (withBrackets) {

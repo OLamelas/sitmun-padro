@@ -12,7 +12,6 @@ import java.util.TreeMap;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class HabitantesModel {
     private String codigoDomicilio;
     private String distrito;
