@@ -31,7 +31,7 @@ padro:
 
 tributes:
   soap-url: ${TRIBUTES_SOAP_URL:default-tributes-url}
-  soap-msg: ${TRIBUTES_SOAP_MSG:<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><Tributs xmlns="http://tempuri.org/"><IDEntitat>{municipio}</IDEntitat><IDUsuari>mtuson</IDUsuari><refCadastral>{ref_cad}</refCadastral></Tributs></soap:Body></soap:Envelope>}
+  soap-msg: ${TRIBUTES_SOAP_MSG:<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><Tributs xmlns="http://tempuri.org/"><IDEntitat>{municipio}</IDEntitat><IDUsuari>usrname</IDUsuari><refCadastral>{ref_cad}</refCadastral></Tributs></soap:Body></soap:Envelope>}
 
 transformations:
   municipalities: "{\"25110\":\"2511090004\"}"
