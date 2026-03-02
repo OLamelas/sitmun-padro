@@ -1,0 +1,27 @@
+services:
+  padro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9090:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - AUTH_USERNAME=default-username
+      - AUTH_PASSWORD=default-password
+      - API_SHARED_SECRET=shared-secret
+      - AYTOS_USERNAME=default-aytos-username
+      - AYTOS_PASSWORD=default-aytos-password
+      - AYTOS_SOAP_URL=default-aytos-url
+      - AYTOS_PUB_KEY=default-aytos-key
+      - DB_URL=jdbc:h2:mem:padro-db
+      - DB_USERNAME=sa
+      - DB_PASSWORD=
+    networks:
+      - sitmun-network
+
+networks:
+  #padro-network:
+  #  driver: bridge
+  sitmun-network:
+    external: true
