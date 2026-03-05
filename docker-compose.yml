@@ -4,19 +4,30 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "9090:8080"
+      - "${HOST_PORT:-9090}:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - AUTH_USERNAME=default-username
-      - AUTH_PASSWORD=default-password
-      - API_SHARED_SECRET=shared-secret
-      - AYTOS_USERNAME=default-aytos-username
-      - AYTOS_PASSWORD=default-aytos-password
-      - AYTOS_SOAP_URL=default-aytos-url
-      - AYTOS_PUB_KEY=default-aytos-key
-      - DB_URL=jdbc:h2:mem:padro-db
-      - DB_USERNAME=sa
-      - DB_PASSWORD=
+      # Spring
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
+      # Basic Auth
+      - AUTH_USERNAME=${AUTH_USERNAME:-default-username}
+      - AUTH_PASSWORD=${AUTH_PASSWORD:-default-password}
+      # API filter
+      - API_SHARED_SECRET=${API_SHARED_SECRET:-shared-secret}
+      - API_ALLOWED_METHODS=${API_ALLOWED_METHODS:-GET}
+      # Oracle DB
+      - DB_URL=${DB_URL:-jdbc:h2:mem:padro-db}
+      - DB_USERNAME=${DB_USERNAME:-sa}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+      # Aytos SOAP
+      - AYTOS_SOAP_URL=${AYTOS_SOAP_URL:-default-aytos-url}
+      - AYTOS_USERNAME=${AYTOS_USERNAME:-default-aytos-username}
+      - AYTOS_PASSWORD=${AYTOS_PASSWORD:-default-aytos-password}
+      - AYTOS_PUB_KEY=${AYTOS_PUB_KEY:-default-aytos-key}
+      # Aytos REST (refcat)
+      - AYTOS_REFCAT_URL=${AYTOS_REFCAT_URL:-default-aytos-refcat-url}
+      # Tributos SOAP
+      - TRIBUTES_SOAP_URL=${TRIBUTES_SOAP_URL:-default-tributes-url}
+      - TRIBUTES_SOAP_MSG=${TRIBUTES_SOAP_MSG:-}
     networks:
       - sitmun-network
 
