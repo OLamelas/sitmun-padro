@@ -42,3 +42,8 @@ transformations:
 ssl:
   verify: ${SSL_VERIFY:true}
 
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:WARN}
+    com.sitmun.padro: ${LOG_LEVEL_APP:INFO}
+    com.sun.xml.messaging.saaj: ${LOG_LEVEL_SAAJ:WARN}
