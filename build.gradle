@@ -25,7 +25,7 @@ dependencies {
 	implementation libs.spring.boot.starter.actuator
 	implementation libs.commons.codec
 	implementation libs.commons.text
-	implementation libs.javax.xml.soap
+	implementation libs.saaj.impl
 	implementation libs.javax.activation
 	implementation libs.mapstruct
 	implementation libs.jackson.dataformat.xml

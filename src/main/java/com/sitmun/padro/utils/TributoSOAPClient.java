@@ -2,7 +2,7 @@ package com.sitmun.padro.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.xml.soap.*;
+import jakarta.xml.soap.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

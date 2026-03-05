@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPMessage;
+import jakarta.xml.soap.SOAPBody;
+import jakarta.xml.soap.SOAPMessage;
 import java.util.List;
 
 @Slf4j

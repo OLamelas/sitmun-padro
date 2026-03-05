@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.*;
-import javax.xml.soap.*;
+import jakarta.xml.soap.*;
 import org.w3c.dom.*;
 import org.apache.commons.text.StringEscapeUtils;
 import lombok.extern.slf4j.Slf4j;

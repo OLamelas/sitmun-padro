@@ -20,7 +20,7 @@ mapstruct = "1.6.3"
 jackson-dataformat-xml = "2.18.2"
 
 # SOAP/Web Services
-soap-api = "1.4.0"
+saaj-impl = "3.0.4"
 
 # Testing
 junit-platform = "1.11.4"
@@ -49,7 +49,7 @@ mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.re
 jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson-dataformat-xml" }
 
 # SOAP/Web Services
-javax-xml-soap = { module = "javax.xml.soap:javax.xml.soap-api", version.ref = "soap-api" }
+saaj-impl = { module = "com.sun.xml.messaging.saaj:saaj-impl", version.ref = "saaj-impl" }
 javax-activation = { module = "javax.activation:activation", version = "1.1.1" }
 
 # Testing

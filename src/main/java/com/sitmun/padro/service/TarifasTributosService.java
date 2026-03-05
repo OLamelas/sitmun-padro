@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPMessage;
+import jakarta.xml.soap.SOAPBody;
+import jakarta.xml.soap.SOAPMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
