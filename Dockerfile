@@ -9,6 +9,7 @@ COPY . /usr/src/padro
 WORKDIR /usr/src/padro
 # Build JAR (Docker only supports JAR packaging)
 # For WAR builds, use: ./gradlew build -Ppackaging=war locally
+RUN chmod +x gradlew
 RUN --mount=type=cache,target=/root/.gradle ./gradlew --no-daemon -i build -x test
 ARG JDK_VERSION=17
 ARG JDK_TAG=0.17
