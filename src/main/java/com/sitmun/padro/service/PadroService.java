@@ -86,7 +86,9 @@ public class PadroService {
             if(elements.getLength()>0){
                 Node element = elements.item(0);//node <s> amb tags HTML
                 String resultEscaped = element.getTextContent();
+                log.debug("ESCAPED: " + resultEscaped);
                 String resultDecoded = StringEscapeUtils.unescapeHtml4(resultEscaped);
+                log.debug("DECODED: " + resultDecoded);
                 List<DomiciliosModel> dm_l = padronManager.getDomiciliosResponse(resultDecoded);
                 responseSTR += "{\"results\":[";
                 int ind= 0;
