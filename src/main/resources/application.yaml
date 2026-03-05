@@ -38,3 +38,7 @@ tributes:
 
 transformations:
   municipalities: "{\"25110\":\"2511090004\"}"
+
+ssl:
+  verify: ${SSL_VERIFY:true}
+
