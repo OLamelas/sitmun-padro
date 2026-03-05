@@ -10,6 +10,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.MessageDigest;
 import java.util.Set;
 
 public class ApiRequestFilter extends OncePerRequestFilter {
@@ -38,7 +39,7 @@ public class ApiRequestFilter extends OncePerRequestFilter {
 
         final String apiSecretHeader = request.getHeader("X-API-Key");
 
-        if (apiSecretHeader == null || !apiSecretHeader.equals(sharedSecret)) {
+        if (apiSecretHeader == null || !MessageDigest.isEqual(sharedSecret.getBytes(), apiSecretHeader.getBytes())) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"error\": \"Invalid or missing API secret\"}");
             return;
