@@ -10,11 +10,15 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class ApiRequestFilter extends OncePerRequestFilter {
 
     @Value("${api.shared-secret}")
     private String sharedSecret;
+
+    @Value("#{'${api.allowed-methods:GET}'.toUpperCase().split(',')}")
+    private Set<String> allowedMethods;
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
@@ -27,7 +31,7 @@ public class ApiRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws ServletException, IOException {
 
-        if (!"GET".equalsIgnoreCase(request.getMethod())) { // TODO: Review actual need of write operations
+        if (!allowedMethods.contains(request.getMethod().toUpperCase())) {
             response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
         }

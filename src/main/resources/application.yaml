@@ -18,6 +18,9 @@ server:
 # Shared API Secret - Additional security layer
 api:
   shared-secret: ${API_SHARED_SECRET:shared-secret}
+  # Comma-separated list of allowed HTTP methods.
+  # To enable writes declare env var API_ALLOWED_METHODS=GET,PUT,POST
+  allowed-methods: ${API_ALLOWED_METHODS:GET}
 
 padro:
   aytos-username: ${AYTOS_USERNAME:default-aytos-username}
