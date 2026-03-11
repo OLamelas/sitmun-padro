@@ -38,7 +38,7 @@ public class PadroController {
             @RequestParam(defaultValue = "") String door,
             @RequestParam(defaultValue = "false") boolean simplified
     ) {
-        INECode = INECode.startsWith(municipality) ? INECode.substring(municipality.length()) : INECode;
+        INECode = INECode.substring(Math.max(0, INECode.length() - 5));
         return ResponseEntity.ok(padroService.getHabitantes(municipality, nucleus, INECode, portal, letterFrom, floor, door, simplified));
     }
 
@@ -46,9 +46,11 @@ public class PadroController {
     public ResponseEntity<byte[]> getAllHabitantesByDomicilio(
             @PathVariable String municipality,
             @PathVariable String nucleus,
-            @PathVariable String INECode
+            @PathVariable String INECode,
+            @RequestParam(defaultValue = "false") boolean simplified
     ) {
-        return ResponseEntity.ok(padronEdiService.getHabitantes(municipality, nucleus, INECode));
+        INECode = INECode.substring(Math.max(0, INECode.length() - 5));
+        return ResponseEntity.ok(padronEdiService.getHabitantes(municipality, nucleus, INECode, simplified));
     }
 
     @GetMapping("/tributos/{municipio}/{refCad}")

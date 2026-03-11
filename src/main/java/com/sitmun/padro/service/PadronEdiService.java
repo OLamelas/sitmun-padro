@@ -63,7 +63,7 @@ public class PadronEdiService {
     }
 
 
-    public byte[] getHabitantes(String municipi, String nucli, String codiIne) {
+    public byte[] getHabitantes(String municipi, String nucli, String codiIne, boolean simplified) {
         try {
             log.info("tractarPeticio init: obtenir els domicilis per aquesta adreça");
             //municipi -> xxyyy : xx -> provincia | yyy -> municipi
@@ -93,7 +93,7 @@ public class PadronEdiService {
                 log.debug("resultDecoded: " + resultDecoded);
 
                 List<DomiciliosModel> dm_l = padronManager.getDomiciliosResponse(resultDecoded);
-                responseSTR += "{\"results\":[";
+                responseSTR += simplified ? "[" : "{\"results\":[";
                 int ind= 0;
 
                 for(DomiciliosModel dm :dm_l){
@@ -116,9 +116,9 @@ public class PadronEdiService {
                     log.debug("respuesta primeraPeticio" + ": " + responseSTR);
 
                 }
-                responseSTR += "],\"status\":\"OK\"}";
+                responseSTR += simplified ? "]" : "],\"status\":\"OK\"}";
             }else{
-                responseSTR += "{\"results\":[],\"status\":\"EMPTY\"}";
+                responseSTR += simplified ? "[]" : "{\"results\":[],\"status\":\"EMPTY\"}";
             }
             log.debug("tractarPeticio end");
             return responseSTR.getBytes("UTF-8");
