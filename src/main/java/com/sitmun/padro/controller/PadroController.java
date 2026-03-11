@@ -35,7 +35,8 @@ public class PadroController {
             @RequestParam(defaultValue = "") String portal,
             @RequestParam(defaultValue = "") String letterFrom,
             @RequestParam(defaultValue = "") String floor,
-            @RequestParam(defaultValue = "") String door
+            @RequestParam(defaultValue = "") String door,
+            @RequestParam(defaultValue = "false") boolean simplified
     ) {
         INECode = INECode.startsWith(municipality) ? INECode.substring(municipality.length()) : INECode;
         return ResponseEntity.ok(padroService.getHabitantes(municipality, nucleus, INECode, portal, letterFrom, floor, door, simplified));
