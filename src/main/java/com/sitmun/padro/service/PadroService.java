@@ -110,7 +110,7 @@ public class PadroService {
                             if(ind < dm_l.size() && ind > 0){
                                 responseSTR+= ",";
                             }
-                            responseSTR += resultado;
+                            responseSTR += "{" + dm.toJson(false) + ",\"habitants\":[" + resultado + "]}";
                             ind++;
                         } else {
                             // El resultado está vacío o nulo.
