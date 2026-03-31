@@ -30,6 +30,10 @@ services:
       # Tributos SOAP
       - TRIBUTES_SOAP_URL=${TRIBUTES_SOAP_URL:-default-tributes-url}
       - TRIBUTES_SOAP_MSG=${TRIBUTES_SOAP_MSG:-}
+      - LOG_LEVEL_APP=WARN
+      - LOG_LEVEL_SAAJ=WARN
+      - LOG_LEVEL_ROOT=WARN
+      - SSL_VERIFY=true
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
       interval: 30s

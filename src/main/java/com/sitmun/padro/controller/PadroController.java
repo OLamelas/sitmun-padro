@@ -32,14 +32,16 @@ public class PadroController {
             @PathVariable String municipality,
             @PathVariable String nucleus,
             @PathVariable String INECode,
-            @RequestParam(defaultValue = "") String portal,
+            @RequestParam(defaultValue = "", name = "PORTAL") String portal,
             @RequestParam(defaultValue = "") String letterFrom,
             @RequestParam(defaultValue = "") String floor,
             @RequestParam(defaultValue = "") String door,
             @RequestParam(defaultValue = "false") boolean simplified
     ) {
         INECode = INECode.substring(Math.max(0, INECode.length() - 5));
-        return ResponseEntity.ok(padroService.getHabitantes(municipality, nucleus, INECode, portal, letterFrom, floor, door, simplified));
+        return ResponseEntity.ok()
+                .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                .body(padroService.getHabitantes(municipality, nucleus, INECode, portal, letterFrom, floor, door, simplified));
     }
 
     @GetMapping("/habitantes/{municipality}/{nucleus}/{INECode}/all")
@@ -50,12 +52,16 @@ public class PadroController {
             @RequestParam(defaultValue = "false") boolean simplified
     ) {
         INECode = INECode.substring(Math.max(0, INECode.length() - 5));
-        return ResponseEntity.ok(padronEdiService.getHabitantes(municipality, nucleus, INECode, simplified));
+        return ResponseEntity.ok()
+                .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                .body(padronEdiService.getHabitantes(municipality, nucleus, INECode, simplified));
     }
 
     @GetMapping("/tributos/{municipio}/{refCad}")
     public ResponseEntity<byte[]> getTributos(@PathVariable String municipio, @PathVariable String refCad) {
-        return ResponseEntity.ok(tarifasTributosService.getTributos(municipio, refCad));
+        return ResponseEntity.ok()
+                .header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON)
+                .body(tarifasTributosService.getTributos(municipio, refCad));
     }
 
     @PutMapping("/domicilios/{municipio}")

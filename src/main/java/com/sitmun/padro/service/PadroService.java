@@ -124,7 +124,7 @@ public class PadroService {
             }else{
                 responseSTR += "{\"results\":[],\"status\":\"EMPTY\"}";
             }
-            log.debug("tractarPeticio end");
+            log.debug("tractarPeticio end with res: " +  responseSTR);
             return responseSTR.getBytes("UTF-8");
         } catch (Exception e) {
             log.error("Error al doGet",e);
