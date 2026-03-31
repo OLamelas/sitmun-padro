@@ -34,6 +34,8 @@ public class ApiRequestFilter extends OncePerRequestFilter {
 
         if (!allowedMethods.contains(request.getMethod().toUpperCase())) {
             response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Method not allowed\"}");
             return;
         }
 
@@ -41,6 +43,7 @@ public class ApiRequestFilter extends OncePerRequestFilter {
 
         if (apiSecretHeader == null || !MessageDigest.isEqual(sharedSecret.getBytes(), apiSecretHeader.getBytes())) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Invalid or missing API secret\"}");
             return;
         }
